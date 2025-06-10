@@ -41,9 +41,11 @@ let cartContainer = get("cartContainer");
 
 let afterScreen = get("afterScreen");
 
+let body = document.querySelector("body");
+
 function getAvailableLooseTickets() {
     let availableSpace = looseTickets.getBoundingClientRect().height;
-    let ticketUnitSize = 50;
+    let ticketUnitSize = 40;
     return Math.floor(availableSpace / ticketUnitSize);
 }
 
@@ -68,7 +70,7 @@ function addStackTicket() {
 }
 
 function addTicket() {
-    if (looseTickets.children.length < getAvailableLooseTickets() - 1) {
+    if (looseTickets.children.length < getAvailableLooseTickets()) {
         addLooseTicket();
     }
     else {
@@ -133,6 +135,7 @@ async function setTickets(number, interval) {
         else get("ticketAmount").textContent = "";
         if (number < 2) {
             get("submitIcon").classList.remove("minimized");
+            signal("You're out of tickets! Time to check out.");
         }
         else {
             get("submitIcon").classList.add("minimized");
@@ -213,9 +216,7 @@ function makeButton(color, label, callBack, wrapInDiv=true) {
 }
 
 function removeNumpad() {
-    let input = get("input");
-    get("numpadContainer").style.display = "none";
-    input.style.display = "none";
+    get("numpadContainer").classList.add("minimized");
 }
 
 function numpadSetup() {
@@ -363,7 +364,7 @@ function moveSliderBehind(item) {
 
 function loadMainContent() {
     ticketCount = parseInt(input.textContent);
-    if (ticketCount > 90 || ticketCount < 2) {
+    if (ticketCount > 90 || ticketCount < 2 || isNaN(ticketCount)) {
         signal("Ticket limit is between 2 and 90");
         return;
     }
@@ -410,6 +411,36 @@ function filterCards() {
 
 function signal(message) {
     console.log(message);
+    let newMessage = document.createElement("div");
+    newMessage.id = "message";
+    let text = document.createElement("p");
+    text.textContent = message;
+    newMessage.appendChild(text);
+    body.appendChild(newMessage); 
+    setTimeout(() =>{
+        body.removeChild(newMessage);
+    }, 2000);
+}
+    
+
+function reset() {
+    cartItems = {};
+    cartDivs = {};
+    ticketSelection = "All";
+    ticketCount = 0;
+    selected = null;
+    setTickets(ticketCount, 0.1);
+    ticketArea.classList.add("isLarger");
+    cart.classList.add("minimized");
+    mainContent.classList.add("minimized");
+    get("numpadContainer").classList.remove("minimized");
+    get("input").textContent = "";
+    for (let card of cartContainer.querySelectorAll(".purchaseItem")) {
+        cartContainer.removeChild(card);
+    }
+    get("itemList").innerHTML = "";
+    storePage.classList.remove("minimized");
+    afterScreen.classList.add("minimized");
 }
 
 let cartItems = {};

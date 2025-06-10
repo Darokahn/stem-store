@@ -406,6 +406,46 @@ header svg {
     gap: 20px;
 }
 
+#itemList .purchaseItem .ticketIndicator {
+    display: none;
+}
+
 #itemList .delete {
     display: none;
+}
+
+@keyframes fadein-out {
+    0% {
+        opacity: 0%;
+    }
+    5% {
+        opacity: 95%;
+    }
+    85% {
+        opacity: 95%;
+    }
+    100% {
+        opacity: 0%
+    }
+}
+
+#message {
+    position: absolute;
+    width: 20%;
+    aspect-ratio: 3/2;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%, 40px);
+    opacity: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--red);
+    color: white;
+    font-size: 30px;
+    animation-name: fadein-out;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
 }
