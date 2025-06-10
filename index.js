@@ -43,6 +43,40 @@ let afterScreen = get("afterScreen");
 
 let body = document.querySelector("body");
 
+let audioSources = {
+    "ripsound": get("ripsound"),
+    "checkout": get("checkout"),
+    "clickPop": get("clickPop"),
+    "notification": get("notification")
+}
+
+function play(name, volume) {
+    let original = audioSources[name];
+    let newSound = original.cloneNode(true);
+    newSound.volume = volume
+    newSound.id = "";
+    body.appendChild(newSound);
+    newSound.play();
+    newSound.onended = () => body.removeChild(newSound);
+}
+
+let audioTracker = {
+    "ripsound": null,
+    "checkout": null,
+    "clickPop": null,
+    "notification": null
+}
+
+async function playRateLimited(name, volume, nextDelay) {
+    let start = Date.now();
+    await audioTracker[name];
+    if (Date.now() > start) {
+        return;
+    }
+    audioTracker[name] = new Promise((resolve) => setTimeout(resolve, nextDelay));
+    play(name, volume);
+}
+
 function getAvailableLooseTickets() {
     let availableSpace = looseTickets.getBoundingClientRect().height;
     let ticketUnitSize = 40;
@@ -96,6 +130,7 @@ async function distributeTickets() {
 }
 
 function ripTicket() {
+    playRateLimited("ripsound", 0.2, 25);
     let ticket = null;
     let container = null;
     if (looseTickets.children.length > 0) {
@@ -135,7 +170,7 @@ async function setTickets(number, interval) {
         else get("ticketAmount").textContent = "";
         if (number < 2) {
             get("submitIcon").classList.remove("minimized");
-            signal("You're out of tickets! Time to check out.");
+            signal("You're out of tickets! Time to check out.", 3);
         }
         else {
             get("submitIcon").classList.add("minimized");
@@ -313,13 +348,14 @@ function loadCard(ticketValue, name) {
             return;
         }
         if (ticketCount >= ticketValue) {
+            play("clickPop", 0.1);
             ticketCount -= ticketValue;
             setTickets(ticketCount, 1000);
             addCartItem(newCard);
             newCard.classList.add("depressed");
             setTimeout(() => newCard.classList.remove("depressed"), 100);
         }
-        else signal("You don't have enough tickets left");
+        else signal("You don't have enough tickets left", 2);
     }
     let ticketIndicator = newCard.querySelector(".ticketIndicator");
     for (let i = 0; i < ticketValue; i++) {
@@ -365,14 +401,14 @@ function moveSliderBehind(item) {
 function loadMainContent() {
     ticketCount = parseInt(input.textContent);
     if (ticketCount > 90 || ticketCount < 2 || isNaN(ticketCount)) {
-        signal("Ticket limit is between 2 and 90");
+        signal("Ticket limit is between 2 and 90", 2);
         return;
     }
     removeNumpad();
     ticketBar.classList.remove("isLarger");
     mainContent.classList.remove("minimized");
     cart.classList.remove("minimized");
-    get("cartSubmitContainer").onclick = showResults;
+    get("cartSubmitContainer").onclick = () => {showResults(); play("checkout", 0.5);};
     get("ticketLabel").textContent = "Tickets";
     setTickets(ticketCount, 1000);
     let ticketAmounts = ["All", 2, 4, 8, 10, 15, 30, 40];
@@ -381,6 +417,7 @@ function loadMainContent() {
         let selector = ticketSelect.children[i+1]; // skip highlight span
         let amount = ticketAmounts[i];
         selector.onclick = () => {
+            play("clickPop", 0.1);
             moveSliderBehind(selector);
             selected = selector;
             loadPrizes(ticketAmounts[i]);
@@ -409,7 +446,8 @@ function filterCards() {
     }
 }
 
-function signal(message) {
+function signal(message, duration) {
+    play("notification", 1);
     console.log(message);
     let newMessage = document.createElement("div");
     newMessage.id = "message";
@@ -419,7 +457,7 @@ function signal(message) {
     body.appendChild(newMessage); 
     setTimeout(() =>{
         body.removeChild(newMessage);
-    }, 2000);
+    }, duration * 1000);
 }
     
 
