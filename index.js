@@ -370,6 +370,7 @@ async function loadPrizes(ticketValue) {
     itemSection.innerHTML = "";
     let records = await fetch("prizes.json");
     let recordsJSON = await records.json();
+    console.log(recordsJSON);
     let thisPage = null;
     if (ticketValue === "All") {
         thisPage = [];
