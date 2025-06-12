@@ -1,9 +1,9 @@
 {
-    "2": ["Candy", "Sticker", "Buttons"],
+    "2": ["Small Candy", "Sticker", "Buttons"],
     "4": ["LEGO Minifigure", "Small 3D Printed Pokemon", "Large Candy", "UT Tech Swag"],
     "8": ["Large 3D Printed Pokemon", "Rubber Ducky", "Fidget Toy"],
     "10": ["LEGO Statue", "Foam Rocket"],
-    "15": ["Large Model Plane", "Sticker", "Lego Squid"],
-    "30": ["LEGO Whale", "Lego Boat", "Small 3D Printed Dragon"],
+    "15": ["Large Model Plane", "LEGO Squid"],
+    "30": ["LEGO Whale", "LEGO Boat", "Small 3D Printed Dragon"],
     "40": ["Large 3D Printed Dragon"]
 }
