@@ -135,7 +135,7 @@ header svg {
     height: 50px;
     position: relative;
     margin-top: -4%;
-    filter: drop-shadow(-3px -3px #0000002a);
+    /*filter: drop-shadow(-3px -3px #0000002a);*/
 }
 
 .ticket.ripped {
