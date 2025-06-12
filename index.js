@@ -381,7 +381,7 @@ async function loadPrizes(ticketValue) {
         }
     }
     else {
-        thisPage = recordsJSON[ticketValue]
+        thisPage = recordsJSON[ticketValue];
         for (let item of thisPage) {
             await loadCard(ticketValue, item);
         }
@@ -396,11 +396,12 @@ function moveSliderBehind(item) {
 
     slider.style.width = rect.width + "px";
     slider.style.height = rect.height + "px";
-    slider.style.transform = "translate(" + (rect.left - containerRect.left).toString() + "px, 0)"
+    slider.style.transform = "translate(" + (rect.left - containerRect.left).toString() + "px, 0)";
 }
 
 function loadMainContent() {
     ticketCount = parseInt(input.textContent);
+    initialTicketCount = ticketCount;
     if (ticketCount > 90 || ticketCount < 2 || isNaN(ticketCount)) {
         signal("Ticket limit is between 2 and 90", 2);
         return;
@@ -468,6 +469,7 @@ function reset() {
     cartDivs = {};
     ticketSelection = "All";
     ticketCount = 0;
+    initialTicketCount = 0;
     selected = null;
     setTickets(ticketCount, 0.1);
     ticketArea.classList.add("isLarger");
@@ -487,6 +489,7 @@ let cartItems = {};
 let cartDivs = {};
 let ticketSelection = "All";
 let ticketCount = 0;
+let initialTicketCount = 0;
 let selected = null;
 
 window.onresize = () => {if (selected) moveSliderBehind(selected)};

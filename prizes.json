@@ -4,6 +4,6 @@
     "8": ["Large 3D Printed Pokemon", "Rubber Ducky", "Fidget Toy"],
     "10": ["LEGO Statue", "Foam Rocket"],
     "15": ["Large Model Plane", "LEGO Squid"],
-    "30": ["LEGO Whale", "LEGO Boat", "Small 3D Printed Dragon"],
-    "40": ["Large 3D Printed Dragon"]
+    "30": ["LEGO Whale", "LEGO Boat", "Small 3D Printed Dragon", "Large 3D Printed Dragon"],
+    "40": []
 }

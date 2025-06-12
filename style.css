@@ -411,7 +411,6 @@ header svg {
 }
 
 #itemList .delete {
-    display: none;
 }
 
 @keyframes fadein-out {
