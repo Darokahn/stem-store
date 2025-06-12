@@ -424,6 +424,7 @@ function loadMainContent() {
         };
         if (i == 0) setTimeout(() => {selector.onclick();}, 400);
     }
+    get("headerImg").onclick = reset;
 }
 
 function showResults() {
