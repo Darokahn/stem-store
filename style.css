@@ -401,8 +401,8 @@ header svg {
 #itemList .purchaseItem {
     position: relative;
     margin: 0px;
-    width: 150px;
-    height: 150;
+    width: 300px;
+    height: 300px;
     gap: 20px;
 }
 
