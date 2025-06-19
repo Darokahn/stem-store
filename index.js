@@ -50,7 +50,7 @@ let audioSources = {
     "notification": get("notification")
 }
 
-function play(name, volume) {
+async function play(name, volume) {
     let original = audioSources[name];
     let newSound = original.cloneNode(true);
     newSound.volume = volume
@@ -61,19 +61,18 @@ function play(name, volume) {
 }
 
 let audioTracker = {
-    "ripsound": null,
-    "checkout": null,
-    "clickPop": null,
-    "notification": null
+    "ripsound": Date.now(),
+    "checkout": Date.now(),
+    "clickPop": Date.now(),
+    "notification": Date.now()
 }
 
-async function playRateLimited(name, volume, nextDelay) {
-    let start = Date.now();
-    await audioTracker[name];
-    if (Date.now() > start) {
+async function playRateLimited(name, volume, delay) {
+    let lastPlay = audioTracker[name];
+    if (Date.now() - lastPlay < delay) {
         return;
     }
-    audioTracker[name] = new Promise((resolve) => setTimeout(resolve, nextDelay));
+    audioTracker[name] = Date.now();
     play(name, volume);
 }
 
@@ -432,10 +431,7 @@ function loadMainContent() {
 function showResults() {
     storePage.classList.add("minimized");
     afterScreen.classList.remove("minimized");
-    let list = get("itemList");
-    for (let child of get("cartContainer").children) {
-        list.appendChild(child.cloneNode(true));
-    }
+    afterScreen.appendChild(cartContainer);
 }
 
 function filterCards() {
@@ -480,7 +476,6 @@ function reset() {
     for (let card of cartContainer.querySelectorAll(".purchaseItem")) {
         cartContainer.removeChild(card);
     }
-    get("itemList").innerHTML = "";
     storePage.classList.remove("minimized");
     afterScreen.classList.add("minimized");
 }
